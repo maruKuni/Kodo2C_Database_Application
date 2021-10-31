@@ -56,6 +56,7 @@ public class GUITest extends Application {
 		ol.add(new RowData("2051-10-02", "Tokyo", 5, 10));
 		ol.add(new RowData("2077-10-02", "NewYork", 1, 1));
 		ol.add(new RowData("2088-10-02", "Sydney", 2, 10));
+		//ol.add(new RowData(rs.getTimestamp(""), rs.getString(""), ...));
 		// テーブルに列を設定
 		table.getColumns().add(tc1);
 		table.getColumns().add(tc2);
