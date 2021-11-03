@@ -1,3 +1,4 @@
+package kodo2C;
 import java.sql.*;
 
 public class ConnectDB {

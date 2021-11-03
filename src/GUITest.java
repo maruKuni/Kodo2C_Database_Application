@@ -2,6 +2,7 @@ import javafx.application.*;
 import javafx.scene.*;
 import javafx.stage.*;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.*;
 import javafx.scene.control.cell.*;
 import javafx.collections.*;
@@ -34,37 +35,35 @@ public class GUITest extends Application {
 		table = new TableView<GUITest.RowData>();
 		locales = new ComboBox<String>();
 
-		// 絞り込みコンボボックス用のメニュー
 		ObservableList<String> ol2 = FXCollections.observableArrayList("Lasvegas", "Tokyo", "NewYork", "Sydney");
 		locales.setItems(ol2);
-		// ここから属性名の定義
-		// とりあえず日付，地域，震度，マグニチュード
 
 		TableColumn<RowData, String> tc1 = new TableColumn<RowData, String>("日時");
 		TableColumn<RowData, String> tc2 = new TableColumn<RowData, String>("地域");
 		TableColumn<RowData, String> tc3 = new TableColumn<RowData, String>("震度");
 		TableColumn<RowData, String> tc4 = new TableColumn<RowData, String>("マグニチュード");
-		// プロパティの対応付け
 		tc1.setCellValueFactory(new PropertyValueFactory<RowData, String>("date"));
 		tc2.setCellValueFactory(new PropertyValueFactory<RowData, String>("locale"));
 		tc3.setCellValueFactory(new PropertyValueFactory<RowData, String>("level"));
 		tc4.setCellValueFactory(new PropertyValueFactory<RowData, String>("magnitude"));
 
-		// テーブルの中身の定義．これはあくまでプロトタイプなのでベタ打ちだけど，実際にはPostgreから持ってくる．
 		ObservableList<RowData> ol = FXCollections.observableArrayList();
-		ol.add(new RowData("2049-10-02", "Lasvegas", 2, 10));
+		ol.add(new RowData("2049-10-02", "Lasvegas", 2, 12));
 		ol.add(new RowData("2051-10-02", "Tokyo", 5, 10));
 		ol.add(new RowData("2077-10-02", "NewYork", 1, 1));
 		ol.add(new RowData("2088-10-02", "Sydney", 2, 10));
-		//ol.add(new RowData(rs.getTimestamp(""), rs.getString(""), ...));
-		// テーブルに列を設定
 		table.getColumns().add(tc1);
 		table.getColumns().add(tc2);
 		table.getColumns().add(tc3);
 		table.getColumns().add(tc4);
-		// テーブルにデータを設定
 		table.setItems(ol);
-
+		table.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) ->{
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Alert");
+            alert.getDialogPane().setHeaderText(null);
+            alert.getDialogPane().setContentText("test");
+            alert.show();
+		});
 		menus.getChildren().add(searchText);
 		menus.getChildren().add(locales);
 		windowTop.getChildren().add(menus);
