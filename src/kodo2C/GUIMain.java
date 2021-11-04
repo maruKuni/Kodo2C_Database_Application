@@ -7,7 +7,6 @@ import javafx.stage.Stage;
 import javafx.scene.control.cell.*;
 import javafx.collections.*;
 public class GUIMain extends Application{
-	private Label[] labels;
 	private ComboBox<String> prefecture;
 	private ComboBox<String> upperLevels;
 	private ComboBox<String> lowerLevels;
@@ -19,19 +18,17 @@ public class GUIMain extends Application{
 	private TableView<RowDataTsunami> tsunamiTable;
 	
 	public static void main(String[] args) {
-
+		launch(args);
 	}
 	@Override
 	public void start(Stage arg0) throws Exception {
 		initComponents();
 		layoutComponents(arg0);
+		layoutComponents(arg0);
+		arg0.setTitle("地震災害データベース");
+		arg0.show();
 	}
 	private void initComponents() {
-		labels = new Label[4];
-		labels[0].setText("都道府県:");
-		labels[1].setText("震度:");
-		labels[2].setText("マグニチュード:");
-		labels[3].setText("～");
 		setLevelsList();
 		setPrefectureList();
 		upperMagnitude = new TextField();
@@ -109,6 +106,7 @@ public class GUIMain extends Application{
 		upperLevels.setItems(levelList);
 		lowerLevels.setItems(levelList);
 	}
+	@SuppressWarnings("unchecked")
 	private void initTables() {
 		mainTable = new TableView<RowDataMain>();
 		subTable = new TableView<RowDataSub>();
@@ -152,30 +150,29 @@ public class GUIMain extends Application{
 		tsunamiColumn4.setCellValueFactory(new PropertyValueFactory<RowDataTsunami, String>("maxheight"));
 		tsunamiColumn5.setCellValueFactory(new PropertyValueFactory<RowDataTsunami, String>("maxtime"));
 		
-		mainTable.getColumns().add(mainColumn1);
-		mainTable.getColumns().add(mainColumn2);
-		mainTable.getColumns().add(mainColumn3);
-		mainTable.getColumns().add(mainColumn4);
-		mainTable.getColumns().add(mainColumn5);
-		mainTable.getColumns().add(mainColumn6);
-		mainTable.getColumns().add(mainColumn7);
-		mainTable.getColumns().add(mainColumn8);
+		mainTable.getColumns().addAll(mainColumn1, mainColumn2, mainColumn3, mainColumn4,
+				mainColumn5, mainColumn6, mainColumn7, mainColumn8);
+		mainTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		
-		subTable.getColumns().add(subColumn1);
-		subTable.getColumns().add(subColumn2);
-		subTable.getColumns().add(subColumn3);
+		subTable.getColumns().addAll(subColumn1, subColumn2, subColumn3);
+		subTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		
-		tsunamiTable.getColumns().add(tsunamiColumn1);
-		tsunamiTable.getColumns().add(tsunamiColumn2);
-		tsunamiTable.getColumns().add(tsunamiColumn3);
-		tsunamiTable.getColumns().add(tsunamiColumn4);
-		tsunamiTable.getColumns().add(tsunamiColumn5);
-		
+		tsunamiTable.getColumns().addAll(tsunamiColumn1, tsunamiColumn2,
+				tsunamiColumn3, tsunamiColumn4, tsunamiColumn5);
+		tsunamiTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	}
 	private void layoutComponents(Stage stage) {
 		HBox pre = new HBox();
 		HBox lv = new HBox();
 		HBox magni  = new HBox();
+		VBox all = new VBox();
 		
+		pre.getChildren().addAll(new Label("都道府県"), prefecture);
+		lv.getChildren().addAll(new Label("最大震度"), lowerLevels, new Label("～"), upperLevels);
+		magni.getChildren().addAll(new Label("マグニチュード"), lowerMagnitude, new Label("～"), upperMagnitude, search);
+		
+		all.getChildren().addAll(pre, lv, magni, mainTable, subTable, tsunamiTable);
+		Scene sc = new Scene(all, 1280, 720);
+		stage.setScene(sc);
 	}
 }
