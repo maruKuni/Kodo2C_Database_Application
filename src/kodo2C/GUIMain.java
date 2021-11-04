@@ -1,4 +1,6 @@
 package kodo2C;
+
+import java.time.*;
 import javafx.application.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -10,6 +12,8 @@ public class GUIMain extends Application{
 	private ComboBox<String> prefecture;
 	private ComboBox<String> upperLevels;
 	private ComboBox<String> lowerLevels;
+	private DatePicker upperDate;
+	private DatePicker lowerDate;
 	private TextField upperMagnitude;
 	private TextField lowerMagnitude;
 	private Button search;
@@ -36,6 +40,8 @@ public class GUIMain extends Application{
 		upperMagnitude.setPrefColumnCount(5);
 		lowerMagnitude.setPrefColumnCount(5);
 		search = new Button("検索");
+		upperDate = new DatePicker(LocalDate.now());
+		lowerDate = new DatePicker(LocalDate.of(1900, 1, 1));
 		initTables();
 	}
 	private void setPrefectureList() {
@@ -162,17 +168,22 @@ public class GUIMain extends Application{
 		tsunamiTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 	}
 	private void layoutComponents(Stage stage) {
-		HBox pre = new HBox();
-		HBox lv = new HBox();
-		HBox magni  = new HBox();
-		VBox all = new VBox();
+		HBox pre = new HBox(0.5);
+		HBox lv = new HBox(0.5);
+		HBox date = new HBox(0.5);
+		HBox magni  = new HBox(2);
+		VBox all = new VBox(0.5);
 		
-		pre.getChildren().addAll(new Label("都道府県"), prefecture);
-		lv.getChildren().addAll(new Label("最大震度"), lowerLevels, new Label("～"), upperLevels);
+		pre.getChildren().addAll(new Label("都道府県:"), prefecture);
+		lv.getChildren().addAll(new Label("最大震度:"), lowerLevels, new Label("～"), upperLevels);
+		date .getChildren().addAll(new Label("日付:"), lowerDate, new Label("～"), upperDate);
 		magni.getChildren().addAll(new Label("マグニチュード"), lowerMagnitude, new Label("～"), upperMagnitude, search);
 		
-		all.getChildren().addAll(pre, lv, magni, mainTable, subTable, tsunamiTable);
+		all.getChildren().addAll(pre, lv, date ,magni, mainTable, subTable, tsunamiTable);
 		Scene sc = new Scene(all, 1280, 720);
 		stage.setScene(sc);
+	}
+	private void setEvents() {
+		
 	}
 }
