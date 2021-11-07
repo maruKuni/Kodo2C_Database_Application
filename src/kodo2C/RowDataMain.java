@@ -8,11 +8,12 @@ public class RowDataMain {
 	private final SimpleStringProperty centre;
 	private final SimpleStringProperty maxlv;
 	private final SimpleDoubleProperty magnitude;
-	private final SimpleDoubleProperty depth;
+	private final SimpleStringProperty depth;
 	private final SimpleDoubleProperty latitude;
 	private final SimpleDoubleProperty longitude;
 	private final SimpleIntegerProperty code;
-	public RowDataMain(int code,Timestamp date, String prefecture,String centre, String maxlv,double magnitude, double depth,
+	public RowDataMain(int code,Timestamp date, String prefecture,String centre, 
+			String maxlv,double magnitude, String depth,
 			double latitude, double longitude) {
 		this.code = new SimpleIntegerProperty(code);
 		this.date = new SimpleStringProperty(date.toString());
@@ -20,11 +21,11 @@ public class RowDataMain {
 		this.maxlv = new SimpleStringProperty(lvToString(maxlv));
 		this.centre = new SimpleStringProperty(centre);
 		this.magnitude = new SimpleDoubleProperty(magnitude);
-		this.depth = new SimpleDoubleProperty(depth);
+		this.depth = new SimpleStringProperty(depth);
 		this.longitude = new SimpleDoubleProperty(longitude);
 		this.latitude = new SimpleDoubleProperty(latitude);
 	}
-	private String lvToString(String lv) {
+	public static String lvToString(String lv) {
 		if(lv.equals("5")) {
 			return "5弱";
 		}else if(lv.equals("6")) {
@@ -53,7 +54,7 @@ public class RowDataMain {
 	public DoubleProperty magnitudeProperty() {
 		return magnitude;
 	}
-	public DoubleProperty depthProperty() {
+	public StringProperty depthProperty() {
 		return depth;
 	}
 	public DoubleProperty longitudeProperty() {
