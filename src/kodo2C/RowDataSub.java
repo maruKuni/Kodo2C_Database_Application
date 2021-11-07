@@ -1,5 +1,6 @@
 package kodo2C;
 import javafx.beans.property.*;
+import javafx.beans.*;
 public class RowDataSub {
 	private SimpleStringProperty level;
 	private SimpleStringProperty prefecture;

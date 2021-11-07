@@ -1,7 +1,7 @@
 package kodo2C;
 
 import javafx.beans.property.*;
-
+import javafx.beans.*;
 public class RowDataTsunami {
 	private SimpleStringProperty prefecture;
 	private SimpleStringProperty area;
