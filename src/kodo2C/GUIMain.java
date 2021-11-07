@@ -222,7 +222,7 @@ public class GUIMain extends Application {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			if (mainTable != null) {
+			if (selectionRecord == null) {
 				selectionRecord = mainTable.getSelectionModel();
 				selectionRecord.selectedItemProperty().addListener((Observable observ) -> {
 					try {
