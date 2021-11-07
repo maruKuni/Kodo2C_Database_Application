@@ -1,6 +1,7 @@
 package kodo2C;
 import java.sql.Timestamp;
 import javafx.beans.property.*;
+import javafx.beans.*;
 public class RowDataMain {
 	//主テーブル用のデータ
 	private final SimpleStringProperty date;

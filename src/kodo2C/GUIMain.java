@@ -30,6 +30,7 @@ public class GUIMain extends Application {
 	private ObservableList<RowDataMain> mainRecords;
 	private ObservableList<RowDataSub> subRecords;
 	private ObservableList<RowDataTsunami> tsunamiRecords;
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -57,7 +58,7 @@ public class GUIMain extends Application {
 		search = new Button("検索");
 		upperDate = new DatePicker(LocalDate.now());
 		lowerDate = new DatePicker(LocalDate.of(1900, 1, 1));
-		
+
 		setEvents();
 		initTables();
 	}
@@ -190,7 +191,7 @@ public class GUIMain extends Application {
 		tsunamiTable.getColumns().addAll(tsunamiColumn1, tsunamiColumn2,
 				tsunamiColumn3, tsunamiColumn4, tsunamiColumn5);
 		tsunamiTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		
+
 		mainRecords = FXCollections.observableArrayList();
 		subRecords = FXCollections.observableArrayList();
 		tsunamiRecords = FXCollections.observableArrayList();
@@ -221,7 +222,7 @@ public class GUIMain extends Application {
 			} catch (SQLException e1) {
 				e1.printStackTrace();
 			}
-			if (selectionRecord == null) {
+			if (mainTable != null) {
 				selectionRecord = mainTable.getSelectionModel();
 				selectionRecord.selectedItemProperty().addListener((Observable observ) -> {
 					try {
@@ -230,7 +231,9 @@ public class GUIMain extends Application {
 						e1.printStackTrace();
 					}
 				});
+
 			}
+
 		});
 
 	}
@@ -286,8 +289,11 @@ public class GUIMain extends Application {
 		if (selectionRecord.getSelectedItem() != null) {
 			System.out.println("record sellected:" + selectionRecord.getSelectedItem().codeProperty());
 		}
-		db.getSubTable(selectionRecord.getSelectedItem().codeProperty().intValue(), subTable,subRecords);
-		db.getTsunamiTable(selectionRecord.getSelectedItem().codeProperty().intValue(), tsunamiTable, tsunamiRecords);
+		if (selectionRecord.getSelectedItem() != null) {
+			db.getSubTable(selectionRecord.getSelectedItem().codeProperty().intValue(), subTable, subRecords);
+			db.getTsunamiTable(selectionRecord.getSelectedItem().codeProperty().intValue(), tsunamiTable,
+					tsunamiRecords);
+		}
 	}
 
 	private int levelToInt(String level) {
