@@ -1,6 +1,4 @@
 package kodo2C;
-import javafx.beans.*;
-import java.sql.Timestamp;
 import javafx.beans.property.*;
 public class RowDataSub {
 	private SimpleStringProperty level;
@@ -24,5 +22,14 @@ public class RowDataSub {
 			return "7";
 		}
 		return lv;
+	}
+	public StringProperty levelProperty() {
+		return level;
+	}
+	public StringProperty prefectureProperty() {
+		return prefecture;
+	}
+	public StringProperty areaProperty() {
+		return area;
 	}
 }
