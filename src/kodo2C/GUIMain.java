@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.*;
 import javafx.application.*;
-import javafx.beans.Observable;
+import javafx.beans.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -57,12 +57,17 @@ public class GUIMain extends Application {
 		lowerMagnitude.setPrefColumnCount(5);
 		search = new Button("検索");
 		upperDate = new DatePicker(LocalDate.now());
-		lowerDate = new DatePicker(LocalDate.of(1900, 1, 1));
+		lowerDate = new DatePicker(LocalDate.of(2010, 1, 1));
 
 		setEvents();
 		initTables();
 	}
-
+	@Override
+	public void stop() throws Exception {
+		// TODO 自動生成されたメソッド・スタブ
+		db.closeDB();
+		super.stop();
+	}
 	private void setPrefectureList() {
 		prefecture = new ComboBox<String>();
 		prefecture.setItems(FXCollections.observableArrayList(
@@ -144,7 +149,7 @@ public class GUIMain extends Application {
 		tsunamiTable = new TableView<RowDataTsunami>();
 
 		TableColumn<RowDataMain, String> mainColumn1 = new TableColumn<RowDataMain, String>("日時");
-		TableColumn<RowDataMain, String> mainColumn2 = new TableColumn<RowDataMain, String>("都道府県");
+		TableColumn<RowDataMain, String> mainColumn2 = new TableColumn<RowDataMain, String>("震源地");
 		TableColumn<RowDataMain, String> mainColumn3 = new TableColumn<RowDataMain, String>("震央");
 		TableColumn<RowDataMain, Double> mainColumn4 = new TableColumn<RowDataMain, Double>("緯度");
 		TableColumn<RowDataMain, Double> mainColumn5 = new TableColumn<RowDataMain, Double>("経度");
@@ -160,7 +165,9 @@ public class GUIMain extends Application {
 		mainColumn6.setCellValueFactory(new PropertyValueFactory<RowDataMain, String>("maxlv"));
 		mainColumn7.setCellValueFactory(new PropertyValueFactory<RowDataMain, Double>("magnitude"));
 		mainColumn8.setCellValueFactory(new PropertyValueFactory<RowDataMain, Double>("depth"));
-
+		mainColumn6.setComparator((lv1, lv2) -> {
+			return RowDataMain.StringTolv(lv1)-RowDataMain.StringTolv(lv2);
+		});
 		TableColumn<RowDataSub, String> subColumn1 = new TableColumn<RowDataSub, String>("震度");
 		TableColumn<RowDataSub, String> subColumn2 = new TableColumn<RowDataSub, String>("都道府県");
 		TableColumn<RowDataSub, String> subColumn3 = new TableColumn<RowDataSub, String>("地域");
@@ -204,7 +211,7 @@ public class GUIMain extends Application {
 		HBox magni = new HBox(2);
 		VBox all = new VBox(0.5);
 
-		pre.getChildren().addAll(new Label("都道府県:"), prefecture);
+		pre.getChildren().addAll(new Label("震源地:"), prefecture);
 		lv.getChildren().addAll(new Label("最大震度:"), lowerLevels, new Label("～"), upperLevels);
 		date.getChildren().addAll(new Label("日付:"), lowerDate, new Label("～"), upperDate);
 		magni.getChildren().addAll(new Label("マグニチュード"), lowerMagnitude, new Label("～"), upperMagnitude, search);
@@ -217,6 +224,8 @@ public class GUIMain extends Application {
 	private void setEvents() {
 		search.setOnAction(e -> {
 			setInputs();
+			subRecords.clear();
+			tsunamiRecords.clear();
 			try {
 				db.getMainTable(input, mainTable, mainRecords);
 			} catch (SQLException e1) {
@@ -233,7 +242,7 @@ public class GUIMain extends Application {
 				});
 
 			}
-
+			db.printSQL();
 		});
 
 	}

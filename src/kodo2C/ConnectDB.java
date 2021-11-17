@@ -70,6 +70,9 @@ public class ConnectDB {
 		}
 		table.setItems(records);
 	}
+	void printSQL() {
+		System.out.println(sql);
+	}
 	private void compositeSQL(UserInputs input) {
 		sql = "select * from t_quake\n";
 		sql += "where maxlv between " + input.getLowerLevel() +" and " + input.getUpperLevel() +"\n";
@@ -82,7 +85,7 @@ public class ConnectDB {
 			sql += "and magnitude > " + input.getLowerMagni() + "\n";
 		}
 		if(input.getPrefectureSelected()) {
-			sql += "and prefecture='" + input.getPrefecture() +"'\n";
+			sql += "and quake_center_prefecture='" + input.getPrefecture() +"'\n";
 		}
 		sql += ";";
 	}

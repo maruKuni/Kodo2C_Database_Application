@@ -40,6 +40,28 @@ public class RowDataMain {
 		}
 		return lv;
 	}
+	public static int StringTolv(String lv) {
+		int lvInt;
+		if(lv.length() == 1) {
+			lvInt = Integer.parseInt(lv);
+			if(lvInt == 7) {
+				lvInt = 9;
+			}
+			return lvInt;
+		}
+		switch(lv) {
+		case "5弱":
+			return 5;
+		case "5強":
+			return 6;
+		case "6弱":
+			return 7;
+		case "6強" :
+			return 8;
+			default:
+				return 0;
+		}
+	}
 	public StringProperty dateProperty(){
 		return date;
 	}
